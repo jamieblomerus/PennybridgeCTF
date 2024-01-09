@@ -5,12 +5,17 @@ use PBCTF\Actions;
 
 class Home {
     public function title() {
-        echo 'Home';
+        echo 'Pennybridge CTF';
     }
 
     public function render() {
-        Actions::add_action('title', [$this, 'title']);
-        get_header();
+        global $method;
+        $raw = $method === 'POST';
+
+        if (!$raw){
+            Actions::add_action('title', [$this, 'title']);
+            get_header();
+        }
         ?>
         <main class="home">
             <div>
@@ -26,7 +31,7 @@ class Home {
                         <footer>— <cite><a href="https://capturetheflag.se/om/">capturetheflag.se</a></cite></footer>
                     </blockquote>
                 </div>
-                <div class="faq-answer">
+                <div class="faq-answer" id="regler">
                     <h3>Finns det några regler?</h3>
                     <p>För att spelet ska vara rättvist och roligt för alla så finns det några regler som måste följas:</p>
                     <ul>
@@ -40,7 +45,9 @@ class Home {
             </div>
         </main>
         <?php
-        get_footer();
+        if (!$raw) {
+            get_footer();
+        }
     }
 }
 

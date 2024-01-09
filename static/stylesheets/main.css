@@ -49,9 +49,13 @@ body nav .login:hover {
     background-color: #ffbf4c;
 }
 
-/*-------------------*/
-/*------ Home ------*/
-/*-----------------*/
+body main {
+    padding: 1em;
+}
+
+/*------------------*/
+/*----- Start -----*/
+/*----------------*/
 body main.home {
     display: flex;
     flex-direction: row;
@@ -72,6 +76,36 @@ body main.home .faq-answer blockquote {
 }
 body main.home .faq-answer blockquote a {
     color: rgb(255, 255, 255);
+}
+
+/*-------------------*/
+/*--- Challenges ---*/
+/*-----------------*/
+body main.challenges {
+    
+}
+body main.challenges .challenge-category ul {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-gap: 1em;
+}
+body main.challenges .challenge-category ul li {
+    list-style-type: none;
+    background-color: rgb(2, 124, 151);
+    padding: 1em;
+    aspect-ratio: 2/1;
+}
+body main.challenges .challenge-category ul li a {
+    color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+body main.challenges .challenge-category ul li .challenge-name {
+    font-size: 1.5em;
+    font-weight: 700;
+}
+body main.challenges .challenge-category ul li .challenge-points {
+    font-size: .9em;
+    font-weight: 600;
 }
 
 /*-------------------*/
