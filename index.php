@@ -4,12 +4,16 @@ include __DIR__ . '/includes/actions.php';
 // Get route
 $request = $_SERVER['REQUEST_URI'];
 $route = explode('?', $request)[0];
+$method = $_SERVER['REQUEST_METHOD'];
 
 // Include page
 switch (strToLower($route)) {
     case '/':
-    case '/home':
-        require __DIR__ . '/views/home.php';
+    case '/start':
+        require __DIR__ . '/views/start.php';
+        break;
+    case '/utmaningar':
+        require __DIR__ . '/views/utmaningar.php';
         break;
     default:
         require __DIR__ . '/views/404.php';
