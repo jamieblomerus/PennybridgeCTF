@@ -88,6 +88,7 @@ class Admin {
 
                 add_challenge.addEventListener('submit', async e => {
                     e.preventDefault();
+                    e.stopPropagation();
 
                     const name = document.getElementById('name').value;
                     const description = document.getElementById('description').value;
