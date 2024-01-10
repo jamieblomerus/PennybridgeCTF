@@ -21,6 +21,7 @@ class Login {
         }
 
         Actions::add_action('title', [$this, 'title']);
+        Actions::add_action('body_end', [$this, 'JS_validation']);
         get_header();
         ?>
         <main class="login" data-title="<?php $this->title() ?>">
@@ -35,6 +36,25 @@ class Login {
         </main>
         <?php
         get_footer();
+    }
+
+    public function JS_validation() {
+        ?>
+        <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const phone = document.querySelector('#phone');
+            const phoneRegex = /^07[0-9]{8}$/;
+
+            form.addEventListener('submit', (e) => {
+                if (!phoneRegex.test(phone.value)) {
+                    e.preventDefault();
+                    phone.classList.add('invalid');
+                }
+            });
+        });
+        </script>
+        <?php
     }
 }
 
