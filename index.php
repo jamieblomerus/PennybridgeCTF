@@ -1,5 +1,8 @@
 <?php
+session_start();
+require __DIR__ . '/vendor/autoload.php';
 include __DIR__ . '/includes/actions.php';
+include __DIR__ . '/includes/account.php';
 
 // Get route
 $request = $_SERVER['REQUEST_URI'];
@@ -10,13 +13,29 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch (strToLower($route)) {
     case '/':
     case '/start':
-        require __DIR__ . '/views/start.php';
+        require_once __DIR__ . '/views/start.php';
+        break;
+    case '/inloggning':
+        require_once __DIR__ . '/views/login.php';
+        break;
+    case '/inloggning/kod':
+        require_once __DIR__ . '/views/login_code.php';
+        break;
+    case '/utloggning':
+        session_unset();
+        session_destroy();
+        header('Location: /');
+        exit;
         break;
     case '/utmaningar':
-        require __DIR__ . '/views/utmaningar.php';
+        require_once __DIR__ . '/views/utmaningar.php';
+        break;
+    case '/api/login':
+        require_once __DIR__ . '/includes/account.php';
+        PBCTF\LoginAPI::api_callback();
         break;
     default:
-        require __DIR__ . '/views/404.php';
+        require_once __DIR__ . '/views/404.php';
         break;
 }
 
