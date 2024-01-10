@@ -15,7 +15,7 @@ class Challenges {
     }
 
     public static function get_challenges_by_category(string $category) {
-        return self::$store->findBy(['category', '=', $category]);
+        return self::$store->findBy(['category', '=', $category], ['points' => 'ASC']);
     }
 
     public static function get_challenge(int $id) {
