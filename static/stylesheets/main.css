@@ -106,10 +106,19 @@ body main.challenges .challenge-category ul li {
     background-color: rgb(2, 124, 151);
     padding: 1em;
     aspect-ratio: 2/1;
+    position: relative;
 }
 body main.challenges.disabled .challenge-category ul li {
     background-color: rgb(0, 44, 54);
     cursor: not-allowed;
+}
+body main.challenges .challenge-category ul li .solved {
+    /* corner */
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: .5em;
+    font-size: .8em;
 }
 body main.challenges .challenge-category ul li p,
 body main.challenges .challenge-category ul li a {

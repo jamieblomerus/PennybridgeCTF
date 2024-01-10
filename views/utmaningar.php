@@ -49,13 +49,22 @@ class Home {
                         <ul>
                             <?php
                             foreach ($challenges as $challenge) {
+                                if ($loggedin) {
+                                    $user = \PBCTF\LoginAPI::get_user();
+                                    $solved = in_array($challenge['_id'], $user['solved']);
+                                }
                                 ?>
                                 <li>
                                     <?php
                                     if ($loggedin) {
                                         ?>
                                         <a class="async-loading" href="/utmaningar/<?php echo $category ?>/<?php echo $challenge['_id'] ?>">
-                                        <?php
+                                            <?php
+                                            if ($solved) {
+                                                ?>
+                                                <span class="solved">Avklarad</span>
+                                                <?php
+                                            }
                                     }
                                     ?>
                                             <p class="challenge-name"><?php echo $challenge['name'] ?></p>

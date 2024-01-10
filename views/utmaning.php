@@ -48,7 +48,7 @@ class Utmaning {
                 <p class="challenge-points"><?php echo $this->challenge['points'] ?> poäng</p>
                 <p class="challenge-description"><strong>Beskrivning</strong><br><?php echo $this->challenge['description'] ?></p>
             </div>
-            <form action="/utmaningar/<?php echo $challenge_id ?>" method="POST"<?php echo $solved ? ' class="solved"' : '' ?>>
+            <form <?php echo $solved ? 'class="solved"' : '' ?>>
                 <h3>Lös utmaning</h3>
                 <p>För att lösa utmaningen, skicka in flaggan nedan. Samtliga flaggor har formatet <code>PBCTF{flagga}</code>.</p>
                 <label for="flag">Flagga</label><br>
@@ -72,6 +72,7 @@ class Utmaning {
 
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
+                e.stopPropagation();
                 submit.disabled = true;
                 submit.value = 'Skickar...';
                 if (document.querySelector('.error')) {
