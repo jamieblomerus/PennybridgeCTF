@@ -8,6 +8,14 @@ body {
     flex-direction: column;
 }
 
+body main p.error {
+    border: 0.2em solid rgb(255, 0, 0);
+    padding: 1em;
+    border-radius: 0.5em;
+    background-color: rgb(0, 44, 54);
+    color: rgb(255, 255, 255);
+}
+
 /*-------------------*/
 /*--- Navigation ---*/
 /*-----------------*/
@@ -95,8 +103,15 @@ body main.challenges .challenge-category ul li {
     padding: 1em;
     aspect-ratio: 2/1;
 }
+body main.challenges.disabled .challenge-category ul li {
+    background-color: rgb(0, 44, 54);
+}
 body main.challenges .challenge-category ul li a {
     color: rgb(255, 255, 255);
+    text-decoration: none;
+}
+body main.challenges.disabled .challenge-category ul li a {
+    color: rgba(255, 255, 255, 0.347);
     text-decoration: none;
 }
 body main.challenges .challenge-category ul li .challenge-name {
@@ -106,6 +121,37 @@ body main.challenges .challenge-category ul li .challenge-name {
 body main.challenges .challenge-category ul li .challenge-points {
     font-size: .9em;
     font-weight: 600;
+}
+
+/*-------------------*/
+/*--- Login Page ---*/
+/*-----------------*/
+body main.login {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+body main.login form {
+    width: 100%;
+}
+body main.login form input {
+    width: 100%;
+    padding: 1em;
+    margin: 0.5em 0;
+    border: 0;
+    border-radius: 0.5em;
+    background-color: rgb(0, 44, 54);
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+}
+body main.login form input.invalid {
+    border: 0.2em solid rgb(255, 0, 0);
+}
+body main.login form input[type="submit"] {
+    background-color: #ffab1c;
+    color: rgb(0, 0, 0);
+    border-radius: 0.5em;
+    font-size: .8em;
 }
 
 /*-------------------*/
