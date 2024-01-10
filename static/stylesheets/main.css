@@ -169,6 +169,17 @@ body main.challenge form input[type="submit"] {
     border-radius: 0.5em;
     font-size: .8em;
 }
+body main.challenge form:not(.solved) input[type="submit"]:hover {
+    background-color: #ffbf4c;
+}
+body main.challenge form.solved input[type="submit"] {
+    /* Darker variant of the background color */
+    background-color: #d28d26;
+    color: rgb(0, 0, 0);
+}
+body main.challenge form.solved input:not([type="submit"]) {
+    border: 0.2em solid rgb(0, 255, 0);
+}
 
 /*-------------------*/
 /*--- Login Page ---*/

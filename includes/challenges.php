@@ -22,6 +22,53 @@ class Challenges {
         return self::$store->findById($id);
     }
 
+    public static function api_callback_solve_challenge() {
+        if (!LoginAPI::is_logged_in()) {
+            echo json_encode(['error' => 'Du måste vara inloggad för att lösa utmaningar']);
+            exit;
+        }
+
+        $body = json_decode(file_get_contents('php://input'), true);
+
+        $flag = $body['flag'] ?? null;
+        $challenge_id = $body['challenge_id'] ?? null;
+
+        if (!$flag || !$challenge_id) {
+            echo json_encode(['error' => 'Alla fält måste vara ifyllda']);
+            exit;
+        }
+
+        $challenge = self::$store->findById($challenge_id);
+
+        if (!$challenge) {
+            echo json_encode(['error' => 'Kunde inte hitta utmaning']);
+            exit;
+        }
+
+        if ($challenge['flag'] !== $flag) {
+            echo json_encode(['error' => 'Fel flagga']);
+            exit;
+        }
+
+        $user = LoginAPI::get_user();
+
+        if (in_array($challenge_id, $user['solved'])) {
+            echo json_encode(['error' => 'Du har redan löst denna utmaning']);
+            exit;
+        }
+
+        $user['solved'][] = $challenge_id;
+
+        $user = Users::$store->updateById($user['_id'], ['solved' => $user['solved'], 'points' => $user['points'] + $challenge['points'] ]);
+
+        if (!$user) {
+            echo json_encode(['error' => 'Kunde inte uppdatera användare']);
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
+    }
+
     public static function api_callback_add_challenge() {
         if (!LoginAPI::is_admin()) {
             echo json_encode(['error' => 'Du är ej behörig att lägga till utmaningar']);
