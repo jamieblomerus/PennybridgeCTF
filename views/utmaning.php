@@ -26,6 +26,13 @@ class Utmaning {
             exit;
         }
 
+        // Om användaren inte är inloggad, skicka tillbaka 401 och omdirigera till inloggningssidan
+        if (!\PBCTF\LoginAPI::is_logged_in()) {
+            http_response_code(401);
+            header('Location: /inloggning');
+            exit;
+        }
+
         if (!$raw){
             Actions::add_action('title', [$this, 'title']);
             get_header();

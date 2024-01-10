@@ -51,10 +51,22 @@ class Home {
                             foreach ($challenges as $challenge) {
                                 ?>
                                 <li>
-                                    <a class="async-loading" href="/utmaningar/<?php echo $category ?>/<?php echo $challenge['_id'] ?>">
-                                        <p class="challenge-name"><?php echo $challenge['name'] ?></p>
-                                        <p class="challenge-points"><?php echo $challenge['points'] ?> poäng</p>
-                                    </a>
+                                    <?php
+                                    if ($loggedin) {
+                                        ?>
+                                        <a class="async-loading" href="/utmaningar/<?php echo $category ?>/<?php echo $challenge['_id'] ?>">
+                                        <?php
+                                    }
+                                    ?>
+                                            <p class="challenge-name"><?php echo $challenge['name'] ?></p>
+                                            <p class="challenge-points"><?php echo $challenge['points'] ?> poäng</p>
+                                    <?php
+                                    if ($loggedin) {
+                                        ?>
+                                        </a>
+                                        <?php
+                                    }
+                                    ?>
                                 </li>
                                 <?php
                             }
