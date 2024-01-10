@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function asyncLoading(event) {
     // Hämta href från elementet som klickades på
-    var href = event.target.getAttribute('href');
+    var href = event.target.closest("a").getAttribute('href');
 
     // Efterfråga sidan med hjälp av XMLHttpRequest
     var request = new XMLHttpRequest();

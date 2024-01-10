@@ -51,7 +51,7 @@ class Home {
                             foreach ($challenges as $challenge) {
                                 ?>
                                 <li>
-                                    <a href="/utmaningar/<?php echo $category ?>/<?php echo $challenge['_id'] ?>">
+                                    <a class="async-loading" href="/utmaningar/<?php echo $category ?>/<?php echo $challenge['_id'] ?>">
                                         <p class="challenge-name"><?php echo $challenge['name'] ?></p>
                                         <p class="challenge-points"><?php echo $challenge['points'] ?> poäng</p>
                                     </a>
