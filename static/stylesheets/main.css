@@ -111,11 +111,13 @@ body main.challenges.disabled .challenge-category ul li {
     background-color: rgb(0, 44, 54);
     cursor: not-allowed;
 }
-body main.challenges .challenge-category ul li p {
+body main.challenges .challenge-category ul li p,
+body main.challenges .challenge-category ul li a {
     color: rgb(255, 255, 255);
     text-decoration: none;
 }
-body main.challenges.disabled .challenge-category ul li p {
+body main.challenges.disabled .challenge-category ul li p,
+body main.challenges.disabled .challenge-category ul li a {
     color: rgba(255, 255, 255, 0.347);
     text-decoration: none;
 }
