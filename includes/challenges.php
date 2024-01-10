@@ -19,7 +19,7 @@ class Challenges {
     }
 
     public static function get_challenge(int $id) {
-        return self::$store->findOneBy(['id', '=', $id]);
+        return self::$store->findById($id);
     }
 
     public static function api_callback_add_challenge() {
