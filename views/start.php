@@ -17,7 +17,7 @@ class Home {
             get_header();
         }
         ?>
-        <main class="home">
+        <main class="home" data-title="<?php $this->title() ?>">
             <div>
                 <h2>Välkommen till Pennybridge CTF!</h1>
                 <p>Välkommen till Pennybridge CTF, en CTF som är skapad för att lära ut grunderna i IT-säkerhet. Till skillnad från andra CTFs är denna skapad att vara nybörjarvänlig och ej kräva några särskilda förkunskaper. Lycka till!</p>
