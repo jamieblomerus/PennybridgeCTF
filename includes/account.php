@@ -169,7 +169,7 @@ class Cellsynt {
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://se-1.cellsynt.net/sms.php?username=" . urlencode(self::USERNAME) . "&password=" . urlencode(self::PASSWORD) . "&destination=" . urlencode($phone) . "&type=text&originatortype=alpha&originator=Webbstart&charset=UTF-8&text=" . urlencode($message),
+            CURLOPT_URL => "https://se-1.cellsynt.net/sms.php?username=" . urlencode(self::USERNAME) . "&password=" . urlencode(self::PASSWORD) . "&destination=" . urlencode($phone) . "&type=text&originatortype=alpha&originator=PBCTF&charset=UTF-8&text=" . urlencode($message),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
