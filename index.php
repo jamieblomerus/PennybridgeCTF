@@ -49,7 +49,11 @@ switch (strToLower($route)) {
         PBCTF\Challenges::api_callback_delete_challenge();
         break;
     default:
-        require_once __DIR__ . '/views/404.php';
+        if (preg_match('/^\/utmaningar\/[a-z]+\/[0-9]+$/', $route)) {
+            require_once __DIR__ . '/views/utmaning.php';
+        } else {
+            require_once __DIR__ . '/views/404.php';
+        }
         break;
 }
 
