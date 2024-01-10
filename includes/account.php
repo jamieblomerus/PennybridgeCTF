@@ -124,6 +124,13 @@ class LoginAPI {
 
         return $user['admin'] === true;
     }
+    public static function get_users() {
+        if (!self::is_admin()) {
+            return false;
+        }
+
+        return Users::$store->findAll();
+    }
 }
 
 class Users {

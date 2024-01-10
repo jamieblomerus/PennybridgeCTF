@@ -1,8 +1,9 @@
 <?php
 session_start();
 require __DIR__ . '/vendor/autoload.php';
-include __DIR__ . '/includes/actions.php';
-include __DIR__ . '/includes/account.php';
+require __DIR__ . '/includes/challenges.php';
+require __DIR__ . '/includes/actions.php';
+require __DIR__ . '/includes/account.php';
 
 // Get route
 $request = $_SERVER['REQUEST_URI'];
@@ -30,9 +31,22 @@ switch (strToLower($route)) {
     case '/utmaningar':
         require_once __DIR__ . '/views/utmaningar.php';
         break;
+    case '/admin':
+        if (PBCTF\LoginAPI::is_admin()) {
+            require_once __DIR__ . '/views/admin.php';
+        } else {
+            require_once __DIR__ . '/views/404.php';
+        }
+        break;
     case '/api/login':
         require_once __DIR__ . '/includes/account.php';
         PBCTF\LoginAPI::api_callback();
+        break;
+    case '/api/add_challenge':
+        PBCTF\Challenges::api_callback_add_challenge();
+        break;
+    case '/api/delete_challenge':
+        PBCTF\Challenges::api_callback_delete_challenge();
         break;
     default:
         require_once __DIR__ . '/views/404.php';

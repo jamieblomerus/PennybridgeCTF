@@ -29,40 +29,41 @@ class Home {
             }
             ?>
             <div class="challenge-categories">
-                <div class="challenge-category">
-                    <h3>Webb</h3>
-                    <ul>
-                        <li>
-                            <a href="/utmaningar/webb/1">
-                                <p class="challenge-name">Hello World</p>
-                                <p class="challenge-points">100 poäng</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/utmaningar/webb/2">
-                                <p class="challenge-name">Hello World 2</p>
-                                <p class="challenge-points">200 poäng</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="challenge-category">
-                    <h3>Forensik</h3>
-                    <ul>
-                        <li>
-                            <a href="/utmaningar/webb/1">
-                                <p class="challenge-name">Hello World</p>
-                                <p class="challenge-points">100 poäng</p>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="/utmaningar/webb/2">
-                                <p class="challenge-name">Hello World 2</p>
-                                <p class="challenge-points">200 poäng</p>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+                <?php
+                $categories = [
+                    'webb' => 'Webb',
+                    'forensik' => 'Forensik',
+                    'reverse' => 'Reverse',
+                    'misc' => 'Misc'
+                ];
+
+                foreach ($categories as $category => $name) {
+                    $challenges = \PBCTF\Challenges::get_challenges_by_category($category);
+
+                    if (empty($challenges)) {
+                        continue;
+                    }
+                    ?>
+                    <div class="challenge-category">
+                        <h3><?php echo $name ?></h3>
+                        <ul>
+                            <?php
+                            foreach ($challenges as $challenge) {
+                                ?>
+                                <li>
+                                    <a href="/utmaningar/<?php echo $category ?>/<?php echo $challenge['_id'] ?>">
+                                        <p class="challenge-name"><?php echo $challenge['name'] ?></p>
+                                        <p class="challenge-points"><?php echo $challenge['points'] ?> poäng</p>
+                                    </a>
+                                </li>
+                                <?php
+                            }
+                            ?>
+                        </ul>
+                    </div>
+                    <?php
+                }
+                ?>
             </div>
         </main>
         <?php
