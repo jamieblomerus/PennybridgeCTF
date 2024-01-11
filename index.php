@@ -31,6 +31,9 @@ switch (strToLower($route)) {
     case '/utmaningar':
         require_once __DIR__ . '/views/utmaningar.php';
         break;
+    case '/poangtavla':
+        require_once __DIR__ . '/views/poangtavla.php';
+        break;
     case '/admin':
         if (PBCTF\LoginAPI::is_admin()) {
             require_once __DIR__ . '/views/admin.php';
