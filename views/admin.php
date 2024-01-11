@@ -28,6 +28,7 @@ class Admin {
                 <thead>
                     <tr>
                         <th>Telefonnummer</th>
+                        <th>Smeknamn</th>
                         <th>Poäng</th>
                         <th>Admin</th>
                     </tr>
@@ -43,6 +44,7 @@ class Admin {
                         ?>
                         <tr>
                             <td><?php echo $phone ?></td>
+                            <td><?php echo $user['nickname'] ?></td>
                             <td><?php echo $user['points'] ?></td>
                             <td><input type="checkbox" disabled name="admin" data-userid="<?php echo $user['_id'] ?>" <?php echo $user['admin'] ? 'checked' : '' ?>></td>
                         </tr>
