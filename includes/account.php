@@ -9,7 +9,7 @@ class LoginAPI {
 
         if ($method !== 'POST') {
             http_response_code(405);
-            echo json_encode(['error' => 'Method not allowed']);
+            echo json_encode(['error' => 'Metoden är ej tillåten']);
             exit;
         }
 
@@ -23,7 +23,7 @@ class LoginAPI {
 
         if (!self::login($phone)) {
             http_response_code(400);
-            echo json_encode(['error' => 'Invalid phone number']);
+            echo json_encode(['error' => 'Ogiltigt telefonnummer']);
             exit;
         }
 
@@ -165,6 +165,77 @@ class Users {
         }
 
         return $user;
+    }
+
+    public static function set_nickname(string $nickname) {
+        if (!LoginAPI::is_logged_in()) {
+            return false;
+        }
+
+        if (strlen($nickname) < 3 || strlen($nickname) > 16) {
+            return false;
+        }
+
+        // Enbart bokstäver, siffror, mellanslag och understreck
+        if (!preg_match('/^[a-z0-9_ ]+$/i', $nickname)) {
+            return false;
+        }
+
+        // Kontrollera att smeknamnet inte redan används
+        $user = self::$store->findOneBy(['nickname', '=', $nickname]);
+        if ($user) {
+            return false;
+        }
+
+        $user = self::$store->updateById(LoginAPI::get_user()['_id'], [
+            'nickname' => $nickname
+        ]);
+
+        if (!$user) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function api_callback_set_nickname() {
+        global $method;
+
+        if ($method !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['error' => 'Metoden är ej tillåten']);
+            exit;
+        }
+
+        if (!LoginAPI::is_logged_in()) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Du är inte inloggad']);
+            exit;
+        }
+
+        if (isset(LoginAPI::get_user()['nickname'])) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Du har redan valt ett smeknamn']);
+            exit;
+        }
+
+        $body = json_decode(file_get_contents('php://input'), true);
+        global $nickname;
+        if (isset($body)) {
+            $nickname = $body['nickname'];
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Inget smeknamn skickat']);
+        }
+
+        if (!self::set_nickname($nickname)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Smeknamnet är ogiltigt eller upptaget']);
+            exit;
+        }
+
+        echo json_encode(['success' => true]);
+        exit;
     }
 }
 
