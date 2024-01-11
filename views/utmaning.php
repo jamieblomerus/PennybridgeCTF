@@ -39,16 +39,21 @@ class Utmaning {
 
         if (!$raw){
             Actions::add_action('title', [$this, 'title']);
+            Actions::add_action('head', function() {
+                ?>
+                <script src="/static/js/page-specific/challenge.js" class="page-specific-script" defer></script>
+                <?php
+            });
             get_header();
         }
         ?>
-        <main class="challenge challenge-<?php echo $challenge_id ?>" data-title="<?php $this->title() ?>">
+        <main class="challenge" data-title="<?php $this->title() ?>" data-script="challenge">
             <div>
                 <h2><?php echo $this->challenge['name'] ?></h2>
                 <p class="challenge-points"><?php echo $this->challenge['points'] ?> poäng</p>
                 <p class="challenge-description"><strong>Beskrivning</strong><br><?php echo $this->challenge['description'] ?></p>
             </div>
-            <form <?php echo $solved ? 'class="solved"' : '' ?>>
+            <form <?php echo $solved ? 'class="solved"' : '' ?> data-challenge-id="<?php echo $challenge_id ?>">
                 <h3>Lös utmaning</h3>
                 <p>För att lösa utmaningen, skicka in flaggan nedan. Samtliga flaggor har formatet <code>PBCTF{flagga}</code>.</p>
                 <label for="flag">Flagga</label><br>
@@ -58,56 +63,8 @@ class Utmaning {
         </main>
         <?php
         if (!$raw) {
-            Actions::add_action('body_end', [$this, 'JS']);
             get_footer();
         }
-    }
-
-    public function JS() {
-        ?>
-        <script>
-            const form = document.querySelector('form');
-            const flag = document.querySelector('#flag');
-            const submit = document.querySelector('input[type="submit"]');
-
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                submit.disabled = true;
-                submit.value = 'Skickar...';
-                if (document.querySelector('.error')) {
-                    document.querySelector('.error').remove();
-                }
-                fetch('/api/solve_challenge', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        flag: flag.value,
-                        challenge_id: <?php echo $this->challenge['_id'] ?>
-                    })
-                }).then(res => res.json()).then(data => {
-                    if (data.error) {
-                        flag.classList.add('invalid');
-                        submit.disabled = false;
-                        submit.value = 'Skicka';
-
-                        flag.addEventListener('input', () => {
-                            flag.classList.remove('invalid');
-                        });
-
-                        // Lägg till felmeddelande ovan formuläret
-                        var error = document.createElement('p');
-                        error.classList.add('error');
-                        error.innerText = data.error;
-                        form.insertBefore(error, flag);
-                    } else {
-                        flag.disabled = true;
-                        flag.value = '';
-                        submit.value = 'Flagga skickad';
-                    }
-                });
-            });
-        </script>
-        <?php
     }
 }
 
