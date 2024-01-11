@@ -28,17 +28,27 @@ class Challenges {
             exit;
         }
 
+        $user = LoginAPI::get_user();
+
         $body = json_decode(file_get_contents('php://input'), true);
 
         $flag = $body['flag'] ?? null;
         $challenge_id = $body['challenge_id'] ?? null;
 
-        if (!$flag || !$challenge_id) {
+        if (!isset($flag) || !isset($challenge_id)) {
             echo json_encode(['error' => 'Alla fält måste vara ifyllda']);
             exit;
         }
 
         $challenge = self::$store->findById($challenge_id);
+
+        if ($challenge_id === '0') {
+            $challenge = [
+                'name' => 'Easter egg',
+                'flag' => 'PBCTF{easter_egg}',
+                'points' => 50
+            ];
+        }
 
         if (!$challenge) {
             echo json_encode(['error' => 'Kunde inte hitta utmaning']);
@@ -49,8 +59,6 @@ class Challenges {
             echo json_encode(['error' => 'Fel flagga']);
             exit;
         }
-
-        $user = LoginAPI::get_user();
 
         if (in_array($challenge_id, $user['solved'])) {
             echo json_encode(['error' => 'Du har redan löst denna utmaning']);
