@@ -32,7 +32,7 @@ class Scoreboard {
                     if (!isset($user['nickname'])) {
                         ?>
                         <p class="error">
-                            Du måste välja ett smeknamn för att kunna se din plats på poängtavlan
+                            Du måste välja ett smeknamn för att synas på poängtavlan.
                             <button id="choose-nickname">Välj smeknamn</button>
                         </p>
                         <?php
@@ -57,7 +57,7 @@ class Scoreboard {
                             ?>
                             <tr>
                                 <td><?php echo $i ?></td>
-                                <td>--</td>
+                                <td><?php echo $user['nickname'] ?></td>
                                 <td><?php echo $user['points'] ?></td>
                             </tr>
                             <?php
@@ -72,12 +72,13 @@ class Scoreboard {
                 if (!isset($user['nickname'])) {
                     ?>
                     <div class="overlay dialog" id="overlay">
-                        <div class="dialog-content">
+                        <div id="dialog-content">
                             <h2>Välj ett smeknamn</h2>
-                            <p>För att kunna se din plats på poängtavlan måste du välja ett smeknamn. Detta smeknamn kommer att visas på poängtavlan.</p>
+                            <p>För att kunna se din plats på poängtavlan måste du välja ett smeknamn. Det går inte att ändra senare.</p>
                             <form id="nickname-form">
                                 <label for="nickname">Smeknamn</label><br>
                                 <input type="text" name="nickname" id="nickname" placeholder="Smeknamn" required><br>
+                                <input type="hidden" name="id" value="<?php echo $user['_id'] ?>">
                                 <input type="submit" value="Spara">
                             </form>
                             <button id="close-overlay" aria-label="Stäng">&times;</button>

@@ -239,7 +239,7 @@ body main.scoreboard .overlay {
 body main.scoreboard .overlay.visible {
     display: flex;
 }
-body main.scoreboard .overlay .dialog-content {
+body main.scoreboard .overlay #dialog-content {
     position: relative;
     background-color: rgb(0, 44, 54);
     padding: 2em;
@@ -247,12 +247,12 @@ body main.scoreboard .overlay .dialog-content {
     width: 50%;
     max-width: 50em;
 }
-body main.scoreboard .overlay .dialog-content h2 {
+body main.scoreboard .overlay #dialog-content h2 {
     margin: 0;
     padding: 0;
     font-size: 1.5em;
 }
-body main.scoreboard .overlay .dialog-content input[type="text"] {
+body main.scoreboard .overlay #dialog-content input[type="text"] {
     width: 100%;
     padding: 1em;
     margin: 0.5em 0;
@@ -262,7 +262,7 @@ body main.scoreboard .overlay .dialog-content input[type="text"] {
     color: rgb(255, 255, 255);
     box-sizing: border-box;
 }
-body main.scoreboard .overlay .dialog-content input[type="submit"] {
+body main.scoreboard .overlay #dialog-content input[type="submit"] {
     width: 100%;
     padding: 1em;
     margin: 0.5em 0;
@@ -270,7 +270,7 @@ body main.scoreboard .overlay .dialog-content input[type="submit"] {
     border: 0;
     border-radius: 0.5em;
 }
-body main.scoreboard .overlay .dialog-content button#close-overlay {
+body main.scoreboard .overlay #dialog-content #close-overlay {
     position: absolute;
     top: 0;
     right: 0;
@@ -281,6 +281,8 @@ body main.scoreboard .overlay .dialog-content button#close-overlay {
     border: none;
     color: rgb(255, 255, 255);
     font-size: 1.5em;
+    text-decoration: none;
+    text-align: center;
 }
 
 /*-------------------*/
