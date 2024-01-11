@@ -14,8 +14,13 @@ if (scoreboard_overlay) {
     });
     scoreboard_nicknameForm.addEventListener('submit', function(e) {
         e.preventDefault();
-        e.stopPropagation();
         var nickname = scoreboard_nickname.value;
+
+        if (nickname.length < 3 || nickname.length > 16) {
+            scoreboard_nickname.classList.add('invalid');
+            return;
+        }
+
         fetch('/api/set_nickname', {
             method: 'POST',
             headers: {
@@ -28,7 +33,7 @@ if (scoreboard_overlay) {
             return response.json();
         }).then(function(json) {
             if (json.error) {
-                alert(json.error);
+                scoreboard_dialogContent.innerHTML = '<p class="error">' + json.error + '</p>' + scoreboard_dialogContent.innerHTML;
             } else {
                 scoreboard_dialogContent.innerHTML = '<p>Ditt smeknamn har ändrats till ' + nickname + '</p><a id="close-overlay" href="/poangtavla">&times;</a>';
                 document.querySelector('#close-overlay').addEventListener('click', function(event) {

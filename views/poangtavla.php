@@ -25,11 +25,11 @@ class Scoreboard {
         <main class="scoreboard" data-title="<?php $this->title() ?>" data-script="scoreboard">
             <div class="scoreboard-intro">
                 <h2>Poängtavla</h1>
-                <p>Här är en lista över alla deltagare och deras poäng. Poängen uppdateras varje gång en utmaning löses.</p>
+                <p>Här är en lista över de 10 bästa spelarna och deras poäng. Poängen uppdateras varje gång en utmaning löses.</p>
                 <?php
                 if (\PBCTF\LoginAPI::is_logged_in()) {
-                    $user = \PBCTF\LoginAPI::get_user();
-                    if (!isset($user['nickname'])) {
+                    $current_user = \PBCTF\LoginAPI::get_user();
+                    if (!isset($current_user['nickname'])) {
                         ?>
                         <p class="error">
                             Du måste välja ett smeknamn för att synas på poängtavlan.
@@ -51,11 +51,15 @@ class Scoreboard {
                     </thead>
                     <tbody>
                         <?php
-                        $users = \PBCTF\Users::$store->findBy(["nickname", "EXISTS", true], ["points" => "DESC"]);
+                        $users = \PBCTF\Users::$store->findBy(["nickname", "EXISTS", true], ["points" => "DESC"], 10);
+                        $current_user_on_scoreboard = false;
                         $i = 1;
                         foreach ($users as $user) {
+                            if (isset($current_user) && $user['_id'] === $current_user['_id']) {
+                                $current_user_on_scoreboard = true;
+                            }
                             ?>
-                            <tr>
+                            <tr <?php echo isset($current_user) && $user['_id'] === $current_user['_id'] ? 'class="current-user"' : '' ?>>
                                 <td><?php echo $i ?></td>
                                 <td><?php echo $user['nickname'] ?></td>
                                 <td><?php echo $user['points'] ?></td>
@@ -63,13 +67,23 @@ class Scoreboard {
                             <?php
                             $i++;
                         }
+
+                        if (isset($current_user) && !$current_user_on_scoreboard) {
+                            ?>
+                            <tr class="current-user">
+                                <td>...</td>
+                                <td><?php echo $current_user['nickname'] ?></td>
+                                <td><?php echo $current_user['points'] ?></td>
+                            </tr>
+                            <?php
+                        }
                         ?>
                     </tbody>
                 </table>
             </div>
             <?php
-            if (\PBCTF\LoginAPI::is_logged_in()) {
-                if (!isset($user['nickname'])) {
+            if (isset($current_user)) {
+                if (!isset($current_user['nickname'])) {
                     ?>
                     <div class="overlay dialog" id="overlay">
                         <div id="dialog-content">
@@ -78,6 +92,7 @@ class Scoreboard {
                             <form id="nickname-form">
                                 <label for="nickname">Smeknamn</label><br>
                                 <input type="text" name="nickname" id="nickname" placeholder="Smeknamn" required><br>
+                                <p class="description">Smeknamnet måste vara mellan 3 och 20 tecken långt och får bara innehålla bokstäver, siffror, mellanslag och understreck.</p>
                                 <input type="hidden" name="id" value="<?php echo $user['_id'] ?>">
                                 <input type="submit" value="Spara">
                             </form>
