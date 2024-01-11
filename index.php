@@ -45,6 +45,10 @@ switch (strToLower($route)) {
         require_once __DIR__ . '/includes/account.php';
         PBCTF\LoginAPI::api_callback();
         break;
+    case '/api/set_nickname':
+        require_once __DIR__ . '/includes/account.php';
+        PBCTF\Users::api_callback_set_nickname();
+        break;
     case '/api/solve_challenge':
         PBCTF\Challenges::api_callback_solve_challenge();
         break;
