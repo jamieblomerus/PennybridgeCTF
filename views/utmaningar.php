@@ -46,6 +46,7 @@ class Home {
                     ?>
                     <div class="challenge-category">
                         <h3><?php echo $name ?></h3>
+                        <hr>
                         <ul>
                             <?php
                             foreach ($challenges as $challenge) {
