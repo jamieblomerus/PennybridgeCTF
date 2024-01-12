@@ -38,7 +38,6 @@ class Home {
                         <li>Det är inte tillåtet att attackera CTF-plattformen eller andra deltagare.</li>
                         <li>Det är inte tillåtet att utföra några DoS eller bruteforce-attacker mot några utmaningar eller CTF-plattformen.</li>
                         <li>Det är inte tillåtet att modifiera eller dela lösningar till utmaningar.</li>
-                        <li>Det är inte tillåtet att använda artificiell intelligens eller maskininlärning för att lösa utmaningar.</li>
                     </ul>
                     <p>Om någon av dessa regler bryts kan det leda till diskvalificering eller i värsta fall polisanmälan.</p>
                 </div>
