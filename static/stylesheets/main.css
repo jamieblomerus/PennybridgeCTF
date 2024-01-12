@@ -23,10 +23,17 @@ code {
     border-radius: 0.2em;
 }
 
+@media screen and (max-width: 600px) {
+    body main {
+        margin-top: 1em;
+    }
+}
+
 /*-------------------*/
 /*--- Navigation ---*/
 /*-----------------*/
 body nav {
+    position: relative;
     background-color: rgb(0, 44, 54);
     width: 100%;
     max-width: calc(100vw - 2em);
@@ -68,6 +75,23 @@ body main {
     padding: 1em;
 }
 
+@media screen and (max-width: 600px) {
+    body nav ul {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        transform: translateY(100%);
+        padding: .5em;
+        width: calc(100% - 1em);
+        height: auto;
+        background-color: rgb(0, 31, 38);
+    }
+    body nav ul li {
+        display: block;
+        width: 100%;
+    }
+}
+
 /*------------------*/
 /*----- Start -----*/
 /*----------------*/
@@ -91,6 +115,15 @@ body main.home .faq-answer blockquote {
 }
 body main.home .faq-answer blockquote a {
     color: rgb(255, 255, 255);
+}
+
+@media screen and (max-width: 600px) {
+    body main.home {
+        flex-direction: column;
+    }
+    body main.home > div {
+        flex: 100%;
+    }
 }
 
 /*-------------------*/
@@ -137,6 +170,13 @@ body main.challenges .challenge-category ul li .challenge-name {
 body main.challenges .challenge-category ul li .challenge-points {
     font-size: .9em;
     font-weight: 600;
+}
+
+@media screen and (max-width: 600px) {
+    body main.challenges .challenge-category ul {
+        grid-template-columns: repeat(2, 1fr);
+        padding-left: 1em;
+    }
 }
 
 /*-------------------*/
@@ -188,6 +228,19 @@ body main.challenge form.solved input[type="submit"] {
 }
 body main.challenge form.solved input:not([type="submit"]) {
     border: 0.2em solid rgb(0, 255, 0);
+}
+
+@media screen and (max-width: 600px) {
+    body main.challenge {
+        flex-direction: column;
+    }
+    body main.challenge > div,
+    body main.challenge > form {
+        flex: 100%;
+    }
+    body main.challenge > div {
+        border-bottom: 0.05em solid rgb(0, 44, 54);
+    }
 }
 
 /*-------------------*/
@@ -301,6 +354,16 @@ body main.scoreboard .overlay #dialog-content #close-overlay {
     font-size: 1.5em;
     text-decoration: none;
     text-align: center;
+}
+
+@media screen and (max-width: 600px) {
+    body main.scoreboard {
+        flex-direction: column;
+    }
+    body main.scoreboard > div.scoreboard-intro,
+    body main.scoreboard > div.scoreboard-table {
+        flex: 100%;
+    }
 }
 
 /*-------------------*/
