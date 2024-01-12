@@ -68,7 +68,7 @@ class Scoreboard {
                             $i++;
                         }
 
-                        if (isset($current_user) && !$current_user_on_scoreboard) {
+                        if (isset($current_user) && isset($current_user['nickname']) && !$current_user_on_scoreboard) {
                             ?>
                             <tr class="current-user">
                                 <td>...</td>
