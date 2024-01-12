@@ -3,9 +3,6 @@
         "vendor-dir": "vendor"
     },
     "require": {
-        "rakibtg/sleekdb": "^2.15",
-        "kornrunner/keccak": "^1.1",
-        "symfony/polyfill-mbstring": "^1.27",
-        "erusev/parsedown": "^1.7"
+        "rakibtg/sleekdb": "^2.15"
     }
 }
