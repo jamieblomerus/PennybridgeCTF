@@ -3,26 +3,62 @@ namespace PBCTF;
 
 use SleekDB\Store;
 
+/**
+ * Klassen Challenges hanterar utmaningar.
+ * 
+ * @package PBCTF
+ */
 class Challenges {
+
+    /**
+     * Databasen för utmaningar
+     */
     private static Store $store;
 
-    public static function init() {
+    /**
+     * Initierar SleekDB-databasen för utmaningar.
+     * 
+     * @return void
+     */
+    public static function init(): void {
         self::$store = new Store('challenges', __DIR__ . '/../data', ["timeout" => false]);
     }
 
-    public static function get_challenges() {
+    /**
+     * Hämtar alla utmaningar.
+     * 
+     * @return array Alla utmaningar som en array
+     */
+    public static function get_challenges(): array {
         return self::$store->findAll();
     }
 
-    public static function get_challenges_by_category(string $category) {
+    /**
+     * Hämtar alla utmaningar i en viss kategori.
+     * 
+     * @param string $category Kategorin som utmaningarna ska hämtas från
+     * @return array Alla utmaningar i kategorin som en array
+     */
+    public static function get_challenges_by_category(string $category): array {
         return self::$store->findBy(['category', '=', $category], ['points' => 'ASC']);
     }
 
-    public static function get_challenge(int $id) {
+    /**
+     * Hämtar en utmaning baserat på dess ID.
+     * 
+     * @param int $id ID:t på utmaningen som ska hämtas
+     * @return array|null Utmaningen som en array, eller null om den inte finns
+     */
+    public static function get_challenge(int $id): array|null {
         return self::$store->findById($id);
     }
 
-    public static function api_callback_solve_challenge() {
+    /**
+     * Hanterar inlämning av flaggor via API-ändpunkten /api/solve_challenge.
+     * 
+     * @return void
+     */
+    public static function api_callback_solve_challenge(): void {
         if (!LoginAPI::is_logged_in()) {
             echo json_encode(['error' => 'Du måste vara inloggad för att lösa utmaningar']);
             exit;
@@ -77,7 +113,12 @@ class Challenges {
         echo json_encode(['success' => true]);
     }
 
-    public static function api_callback_add_challenge() {
+    /**
+     * Hanterar API-anrop till /api/add_challenge.
+     * 
+     * @return void
+     */
+    public static function api_callback_add_challenge(): void {
         if (!LoginAPI::is_admin()) {
             echo json_encode(['error' => 'Du är ej behörig att lägga till utmaningar']);
         }
@@ -131,7 +172,12 @@ class Challenges {
         exit;
     }
 
-    public static function api_callback_delete_challenge() {
+    /**
+     * Hanterar API-anrop till /api/delete_challenge.
+     * 
+     * @return void
+     */
+    public static function api_callback_delete_challenge(): void {
         if (!LoginAPI::is_admin()) {
             echo json_encode(['error' => 'Du är ej behörig att ta bort utmaningar']);
         }

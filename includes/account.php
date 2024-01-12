@@ -3,7 +3,16 @@ namespace PBCTF;
 
 use SleekDB\Store;
 
+/**
+ * LoginAPI hanterar inloggning och utloggning av användare, samt erbjuder stödfunktioner kring nuvarande användare.
+ * 
+ * @package PBCTF
+ */
 class LoginAPI {
+
+    /**
+     * Hanterar inloggningsförfrågan.
+     */
     public static function api_callback() {
         global $method;
 
@@ -13,12 +22,13 @@ class LoginAPI {
             exit;
         }
 
-        $body = json_decode(file_get_contents('php://input'), true);
         global $phone;
-        if (isset($body)) {
-            $phone = $body['phone'];
-        } else {
+        if (isset($_POST['phone'])) {
             $phone = $_POST['phone'];
+        } else {
+            http_response_code(400);
+            echo json_encode(['error' => 'Inget telefonnummer skickat']);
+            exit;
         }
 
         if (!self::login($phone)) {
@@ -27,14 +37,18 @@ class LoginAPI {
             exit;
         }
 
-        if (isset($body)) {
-            echo json_encode(['success' => true]);
-        } else {
-            return true;
-        }
+        return true;
         exit;
     }
-    public static function verify_code(string $phone, string $code) {
+
+    /**
+     * Verifierar en inloggningskod som skickats per SMS.
+     * 
+     * @param string $phone Telefonnummer i formatet 00467...
+     * @param string $code Inloggningskod
+     * @return bool True om inloggningskoden var giltig, annars false
+     */
+    public static function verify_code(string $phone, string $code): bool {
         $user = Users::get_user_by_phone($phone);
 
         if (!$user) {
@@ -60,7 +74,14 @@ class LoginAPI {
 
         return true;
     }
-    public static function login(string $phone) {
+
+    /**
+     * Hanterar inloggningen av användare.
+     * 
+     * @param string $phone Telefonnummer i formatet 00467...
+     * @return bool True om inloggningen lyckades, annars false
+     */
+    public static function login(string $phone): bool {
         global $phone;
         // Kontrollera format
         if (!preg_match('/^07[0-9]{8}$/', $phone)) {
@@ -80,7 +101,7 @@ class LoginAPI {
             }
         }
 
-        $code = rand(100000, 999999); // Rand är tyvärr ibland förutsägbar men jag har inte tid för en bättre lösning just nu
+        $code = rand(100000, 999999); // rand() är tyvärr ibland förutsägbar men jag har inte tid för en bättre lösning just nu
 
         $user = Users::$store->updateById($user['_id'], [
             'code' => $code,
@@ -99,10 +120,20 @@ class LoginAPI {
 
         return true;
     }
+
+    /**
+     * Kollar om användaren är inloggad.
+     */
     public static function is_logged_in() {
         return isset($_SESSION['phone']);
     }
-    public static function get_user() {
+
+    /**
+     * Returnerar den inloggade användaren.
+     * 
+     * @return array|false Användaren som en array eller false om användaren inte är inloggad
+     */
+    public static function get_user(): array|false {
         if (!self::is_logged_in()) {
             return false;
         }
@@ -115,7 +146,13 @@ class LoginAPI {
 
         return $user;
     }
-    public static function is_admin() {
+
+    /**
+     * Kontrollerar om användaren är administratör.
+     * 
+     * @return bool True om användaren är administratör, annars false
+     */
+    public static function is_admin(): bool {
         $user = self::get_user();
 
         if (!$user) {
@@ -124,22 +161,44 @@ class LoginAPI {
 
         return $user['admin'] === true;
     }
-    public static function get_users() {
-        if (!self::is_admin()) {
-            return false;
-        }
 
+    /**
+     * Hämtar alla användare.
+     * 
+     * @return array Alla användare som en array
+     */
+    public static function get_users(): array {
         return Users::$store->findAll();
     }
 }
 
+/**
+ * Users hanterar användare i databasen.
+ * 
+ * @package PBCTF
+ */
 class Users {
+
+    /**
+     * Databasen för användare
+     */
     public static Store $store;
 
-    public static function init() {
+    /**
+     * Initierar SleekDB-databasen för användare.
+     * 
+     * @return void
+     */
+    public static function init(): void {
         self::$store = new Store('users', __DIR__ . '/../data', ["timeout" => false, "auto_cache" => false]);
     }
 
+    /**
+     * Denna funktion hämtar en användare från databasen baserat på dess telefonnummer.
+     * 
+     * @param string $phone Telefonnummer i formatet 00467...
+     * @return array|false Användaren som en array eller false om användaren inte finns
+     */
     public static function get_user_by_phone(string $phone) {
         $user = self::$store->findOneBy(['phone', '=', $phone]);
 
@@ -150,6 +209,12 @@ class Users {
         return $user;
     }
 
+    /**
+     * Denna funktion skapar en ny användare i databasen.
+     * 
+     * @param string $phone Telefonnummer i formatet 00467...
+     * @return array|false Användaren som en array eller false om användaren inte kunde skapas
+     */
     public static function new_user(string $phone) {
         $user = self::$store->insert([
             'phone' => $phone,
@@ -166,8 +231,14 @@ class Users {
 
         return $user;
     }
-
-    public static function set_nickname(string $nickname) {
+    
+    /**
+     * Denna funktion ställer in smeknamn på en användare efter anrop till /api/set_nickname.
+     * 
+     * @param string $nickname Nytt smeknamn
+     * @return bool True om smeknamnet var giltigt och kunde sättas, annars false
+     */
+    public static function set_nickname(string $nickname): bool {
         if (!LoginAPI::is_logged_in()) {
             return false;
         }
@@ -198,6 +269,9 @@ class Users {
         return true;
     }
 
+    /**
+     * Denna funktion hanterar API-anrop till /api/set_nickname.
+     */
     public static function api_callback_set_nickname() {
         global $method;
 
@@ -220,8 +294,7 @@ class Users {
         }
 
         $body = json_decode(file_get_contents('php://input'), true);
-        global $nickname;
-        if (isset($body)) {
+        if (isset($body) && isset($body['nickname'])) {
             $nickname = $body['nickname'];
         } else {
             http_response_code(400);
@@ -239,15 +312,36 @@ class Users {
     }
 }
 
+/**
+ * Cellsynt hanterar SMS och denna klass används således för att skicka SMS.
+ * 
+ * @see https://www.cellsynt.com/pdf/Cellsynt_SMS_gateway_HTTP_interface_(Swedish).pdf
+ * @package PBCTF
+ */
 class Cellsynt {
+    
+    /**
+     * Användarnamn för Cellsynt API
+     */
     const USERNAME = 'webbstartnu';
+
+    /**
+     * Lösenord för Cellsynt API
+     */
     const PASSWORD = 'ST7c8fFQ';
 
+    /**
+     * Denna funktion skickar ett SMS till ett telefonnummer.
+     * 
+     * @param string $phone Telefonnummer i formatet 00467...
+     * @param string $message Meddelandet som ska skickas
+     * @return bool True om SMS:et skickades, annars false
+     */
     public static function send_sms(string $phone, string $message) {
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => "https://se-1.cellsynt.net/sms.php?username=" . urlencode(self::USERNAME) . "&password=" . urlencode(self::PASSWORD) . "&destination=" . urlencode($phone) . "&type=text&originatortype=alpha&originator=PBCTF&charset=UTF-8&text=" . urlencode($message),
+            CURLOPT_URL => "https://se-1.cellsynt.net/sms.php?username=" . urlencode(self::USERNAME) . "&password=" . urlencode(self::PASSWORD) . "&destination=" . urlencode($phone) . "&type=text&originatortype=alpha&originator=PBCTF&charset=UTF-8&text=" . urlencode($message) . "&expiry=" . time() + 60 * 5,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => "",
             CURLOPT_MAXREDIRS => 10,
@@ -258,13 +352,12 @@ class Cellsynt {
             CURLOPT_CUSTOMREQUEST => "GET"
         ]);
 
-        $response = curl_exec($curl);
+        curl_exec($curl);
         $err = curl_error($curl);
 
         curl_close($curl);
 
         if ($err) {
-            error_log("cURL Error #:" . $err);
             return false;
         }
 
