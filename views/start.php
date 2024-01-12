@@ -42,6 +42,10 @@ class Home {
                     </ul>
                     <p>Om någon av dessa regler bryts kan det leda till diskvalificering eller i värsta fall polisanmälan.</p>
                 </div>
+                <div class="faq-answer">
+                    <h3>Är denna CTF realistisk?</h3>
+                    <p>Nej, denna CTF är inte realistisk. Den är skapad för att lära ut grunderna i IT-säkerhet och därför använder den inte realistiska scenarion, även om många koncept går att applicera på verkliga scenarion.</p>
+                </div>
             </div>
         </main>
         <?php
