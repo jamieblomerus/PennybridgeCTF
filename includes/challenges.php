@@ -99,7 +99,7 @@ class Challenges {
             exit;
         }
 
-        if (!in_array($category, ['webb', 'forensik', 'reverse', 'misc'])) {
+        if (!in_array($category, ['webb', 'forensik', 'crypto', 'misc'])) {
             echo json_encode(['error' => 'Ogiltig kategori']);
             exit;
         }

@@ -64,7 +64,7 @@ class Admin {
                 <select name="category" id="category">
                     <option value="webb">Webb</option>
                     <option value="forensik">Forensik</option>
-                    <option value="reverse">Reverse</option>
+                    <option value="crypto">Krypto</option>
                     <option value="misc">Misc</option>
                 </select><br>
                 <label for="points">Poäng</label><br>

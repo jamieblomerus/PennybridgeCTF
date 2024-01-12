@@ -33,7 +33,7 @@ class Home {
                 $categories = [
                     'webb' => 'Webb',
                     'forensik' => 'Forensik',
-                    'reverse' => 'Reverse',
+                    'crypto' => 'Krypto',
                     'misc' => 'Misc'
                 ];
 
