@@ -323,12 +323,12 @@ class Cellsynt {
     /**
      * Användarnamn för Cellsynt API
      */
-    const USERNAME = 'webbstartnu';
+    const USERNAME = '';
 
     /**
      * Lösenord för Cellsynt API
      */
-    const PASSWORD = 'ST7c8fFQ';
+    const PASSWORD = '';
 
     /**
      * Denna funktion skickar ett SMS till ett telefonnummer.
